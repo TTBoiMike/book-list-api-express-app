@@ -17,13 +17,13 @@ exports.add = function (req, res, next) {
         return(next(createError(400, "Incomplete information.")))
     }
     bookList.push({"id": bookId, "title": req.body.title, "author": req.body.author, "hasRead": false})
-    res.send(`${req.body.title} has been added to your book list`)
+    res.send(`${req.body.title} has been added to your reading list.`)
 }
 
 // remove book from the list using an id
 exports.remove = function (req, res) {
     bookList.filter(book => book.bookId !== req.params.id)
-    res.send(`This book has been removed from your book list.`)
+    res.send(`This book has been removed from your reading list.`)
 }
 
 // mark as read
@@ -39,4 +39,11 @@ exports.return = (req, res) => {
         return(next(createError(400, "No book with that ID in the list.")))
     }
     res.send(book)
+}
+
+// return all authors in the reading list
+exports.authors = (req, res) => {
+    const authorList = []
+    bookList.forEach(book => authorList.push(book.author))
+    res.send(authorList)
 }

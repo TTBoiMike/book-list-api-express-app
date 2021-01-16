@@ -12,5 +12,7 @@ router.post('/edit/:id', bookMethods.markRead)
 router.get('/return/:id', bookMethods.return)
 // delete book by id (.delete)
 router.delete('/remove/:id', bookMethods.remove)
+// return all authors in the list
+router.get('/authors', bookMethods.authors)
 
 module.exports = router
