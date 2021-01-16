@@ -1,7 +1,8 @@
+const createError = require('http-errors')
 // define empty array to get books
 let bookList = []
 // define id variable to assign books an identification 
-let bookId = 1
+let bookId = 0
 
 // return all books
 exports.index = function (req, res) {
@@ -9,20 +10,33 @@ exports.index = function (req, res) {
 }
 
 // add book to the list
-exports.add = function (req, res) {
+exports.add = function (req, res, next) {
     console.log(req.body)
-    bookList.push({"id": bookId, "title": req.body.title, "Author": req.body.author, "hasRead": req.body.hasRead})
-    res.send(`${req.body.title} has been added to your book list`)
     bookId++
+    if(!req.body.title || !req.body.author) {
+        return(next(createError(400, "Incomplete information.")))
+    }
+    bookList.push({"id": bookId, "title": req.body.title, "author": req.body.author, "hasRead": false})
+    res.send(`${req.body.title} has been added to your book list`)
 }
 
-// remove book from the list
+// remove book from the list using an id
 exports.remove = function (req, res) {
     bookList.filter(book => book.bookId !== req.params.id)
-    res.send(`${req.body.title} has been removed from your book list.`)
+    res.send(`This book has been removed from your book list.`)
 }
 
-// edit a book listing by ID
-exports.edit = function (req, res) {
+// mark as read
+exports.markRead = (req, res) => {
+    bookList[req.params.id-1].hasRead = true
+    res.send(`You've marked ${bookList[req.params.id].title} as read.`)
+}
 
+// return book by Id
+exports.return = (req, res) => {
+    const book = bookList.find(book => book.id == req.params.id)
+    if(!book) {
+        return(next(createError(400, "No book with that ID in the list.")))
+    }
+    res.send(book)
 }
