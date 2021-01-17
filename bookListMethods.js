@@ -53,8 +53,8 @@ exports.authors = (req, res) => {
 exports.search = (req, res) => {
     console.log("search query =", req.query.q);
     const filteredList = bookList.filter(book => book.author.surname.toLowerCase() == req.query.q)
-    if(filteredList == []) {
-        res.send("Sorry, we couldn't find any authors under that name")
+    if(filteredList.length === 0) {
+        res.send("Sorry, we couldn't find any authors under that surname.")
     } else {
         res.send(filteredList)
     }
