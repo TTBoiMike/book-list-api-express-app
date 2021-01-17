@@ -14,5 +14,6 @@ router.get('/return/:id', bookMethods.return)
 router.delete('/remove/:id', bookMethods.remove)
 // return all authors in the list
 router.get('/authors', bookMethods.authors)
-
+// search for all books by an author (by surname)
+router.get('/search', bookMethods.search)
 module.exports = router
